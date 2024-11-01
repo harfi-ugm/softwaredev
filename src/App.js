@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer, useContext, useCallback } from 'react';
+import './App.css';
 
 // Context for theme and favorites management
 const ThemeContext = React.createContext();
@@ -19,9 +20,11 @@ const favoritesReducer = (state, action) => {
 const App = () => {
   const [theme, setTheme] = useState('light');
   const [searchTerm, setSearchTerm] = useState('');
+  const [favoriteSearchTerm, setFavoriteSearchTerm] = useState(''); // New state for favorite search
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [favorites, dispatch] = useReducer(favoritesReducer, []);
+  const [filteredFavorites, setFilteredFavorites] = useState([]); // New state for filtered favorites
 
   // API key for Spoonacular
   const API_KEY = '22aec26d7b0d4b81921e0a9ab5fedec3';
@@ -56,6 +59,13 @@ const App = () => {
     );
   }, [searchTerm, recipes]);
 
+  // Filter favorites by favorite search term when search button is clicked
+  const handleFavoriteSearch = () => {
+    setFilteredFavorites(
+      favorites.filter(recipe => recipe.title.toLowerCase().includes(favoriteSearchTerm.toLowerCase()))
+    );
+  };
+
   // Add or remove favorite
   const toggleFavorite = useCallback(recipe => {
     const isFavorite = favorites.find(fav => fav.id === recipe.id);
@@ -72,23 +82,33 @@ const App = () => {
         <div className={`app ${theme}`}>
           <header>
             <button onClick={toggleTheme}>Change Theme</button>
-            <input
-              type="text"
-              placeholder="Search Recipes"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-            />
-            <button onClick={() => setFilteredRecipes(recipes)}>Search recipes</button>
           </header>
           
           <h2>Favorites</h2>
+          <div className="searchbar">
+            <input
+              type="text"
+              placeholder="Search Favorite Recipes"
+              value={favoriteSearchTerm}
+              onChange={e => setFavoriteSearchTerm(e.target.value)} // Filter favorites
+            />
+            <button onClick={handleFavoriteSearch}>Search</button> {/* New search button */}
+          </div>
           <div className="favorites">
-            {favorites.map(recipe => (
+            {filteredFavorites.map(recipe => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
-          
-          <h2>Recipes</h2>
+
+          <div className="searchbar">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+            <button onClick={() => setFilteredRecipes(recipes)}>Search</button>
+          </div>
           <div className="recipes">
             {filteredRecipes.map(recipe => (
               <RecipeCard key={recipe.id} recipe={recipe} />
