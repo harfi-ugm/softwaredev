@@ -1,3 +1,32 @@
+/* Centering styles for the search bar and buttons */
+.searchbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.searchbar input {
+  width: 300px; /* Set a fixed width for a better look */
+  padding: 8px;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+.searchbar button {
+  padding: 8px 16px;
+  background-color: var(--button-background);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.searchbar button:hover {
+  background-color: var(--button-hover);
+}
+/* General body and layout styling */
+
 body {
   font-family: 'Nunito', cursive; /* Fallback to cursive if Nunito isn't available */
   margin: 0;
@@ -8,20 +37,34 @@ body {
 }
 
 .app {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: auto;
   padding: 20px;
+  background-color: var(--background-color);
+  
 }
 
 /* Header styles */
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
 
-
+header button {
+  width: Hug (233px)px;
+  height: Hug (64px)px;
+  min-width: 150px;
+  padding: 16px 32px 16px 32px;
+  gap: 10px;
+  border-radius: 4px ;
+  opacity: 0px;
+  background-color: var(--button-background);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
 header button, .recipe-card button {
   font-family: 'Nunito', sans-serif;
@@ -39,19 +82,27 @@ header button:hover {
   background-color: var(--button-hover);
 }
 
-header input {
-  padding: 10px;
-  border: 1px solid var(--input-border);
-  border-radius: 5px;
-  margin-right: 10px;
+.app .favorites, .app .recipes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Ensures two recipe cards per row */
+  gap: 23px;
+  
 }
+
+
 
 /* Recipe and favorites sections */
 h2 {
   font-family: 'Nunito', sans-serif;
   font-weight: 700; /* Apply Nunito with weight 700 for Favorites and Recipes */
   margin-top: 20px;
+  text-align: center;
+  color: var(--text-color);
+  font-family: cursive;
+  
 }
+
+
 
 .favorites, .recipes {
   display: grid;
@@ -61,6 +112,14 @@ h2 {
 
 .recipe-card {
   background-color: var(--card-background);
+  width:100%;
+  max-width:640px;
+  height:auto;
+  margin: 24px;
+  padding: 16px;
+
+
+  
   border-radius: 5px;
   padding: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -68,22 +127,34 @@ h2 {
   transition: transform 0.2s;
 }
 
+.recipe-card {
+  width: Fill (610px)px;
+  height: Hug (496px)px;
+  padding: 24px;
+  gap: 23px;
+  opacity: 0px;
+}
+
 .recipe-card:hover {
   transform: scale(1.05);
 }
 
 .recipe-card img {
-  max-width: 100%;
-  border-radius: 5px;
+  width: 562px;
+  height: 278px;
+  gap: 0px;
 }
 
 .recipe-card button {
-  margin-top: 10px;
-  padding: 10px;
+ width: Hug (321px)px;
+  height: Hug (64px)px;
+  min-width: 150px;
+  padding: 16px 32px 16px 32px;
+  gap: 10px;
+  border-radius: 4px;
+  opacity: 0px;
   background-color: var(--button-background);
   color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }

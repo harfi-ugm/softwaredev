@@ -18,10 +18,12 @@ const favoritesReducer = (state, action) => {
 
 const App = () => {
   const [theme, setTheme] = useState('light');
-  const [inputValue, setInputValue] = useState(''); // holds text input
-  const [searchTerm, setSearchTerm] = useState(''); // triggers search
+  const [searchTerm, setSearchTerm] = useState('');
+  const [favoriteSearchTerm, setFavoriteSearchTerm] = useState(''); // New state for favorite search
   const [recipes, setRecipes] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [favorites, dispatch] = useReducer(favoritesReducer, []);
+  const [filteredFavorites, setFilteredFavorites] = useState([]); // New state for filtered favorites
 
   // API key for Spoonacular
   const API_KEY = 'e4af26cc9fae477a9b159f4c02d7d705';
@@ -47,9 +49,34 @@ const App = () => {
         console.error("Error fetching recipes:", error);
       }
     };
-
-    fetchRecipes();
+if(searchTerm){
+    fetchRecipes();}
   }, [searchTerm]);
+
+
+
+
+  // Filter recipes by search term
+  useEffect(() => {
+    setFilteredRecipes(
+      recipes.filter(recipe => recipe.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  }, [searchTerm, recipes]);
+
+    // Updates `filteredFavorites` each time favorites list changes
+    useEffect(() => {
+      setFilteredFavorites(
+        favorites.filter(recipe => recipe.title.toLowerCase().includes(favoriteSearchTerm.toLowerCase()))
+      );
+    }, [favorites, favoriteSearchTerm]);
+
+  // Filter favorites by favorite search term when search button is clicked
+  const handleFavoriteSearch = () => {
+    setFilteredFavorites(
+      favorites.filter(recipe => recipe.title.toLowerCase().includes( searchTerm.toLowerCase()))
+    );
+  };
+
 
   // Add or remove favorite
   const toggleFavorite = useCallback(recipe => {
@@ -62,31 +89,46 @@ const App = () => {
   }, [favorites]);
 
   return (
-    <ThemeContext.Provider value={theme}>
+      <ThemeContext.Provider value={theme}>
       <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>
         <div className={`app ${theme}`}>
           <header>
-            
             <button onClick={toggleTheme}>Change Theme</button>
-            <input
-              type="text"
-              placeholder="Search Recipes"
-              value={inputValue}
-              onChange={e => setInputValue(e.target.value)}
-            />
-            <button onClick={() => setSearchTerm(inputValue)}>Search recipes</button>
           </header>
           
           <h2>Favorites</h2>
+          <div className="favorites-section">
+            <div className="searchbar">
+              <input
+               type="text"
+               placeholder="Search Favorite Recipes"
+               value={favoriteSearchTerm}
+               onChange={e => setFavoriteSearchTerm(e.target.value)} // Filter favorites
+            />  
+            <button onClick={handleFavoriteSearch}>Search</button> {/* New search button */}
+          </div>
           <div className="favorites">
-            {favorites.map(recipe => (
+            {filteredFavorites.map(recipe => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
+            </div>
           </div>
-          
+        
+         
+
+          <div className="searchbar">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+            <button onClick={() => setFilteredRecipes(recipes)}>Search</button>
+          </div>
+
           <h2>Recipes</h2>
           <div className="recipes">
-            {recipes.map(recipe => (
+            {filteredRecipes.map(recipe => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
