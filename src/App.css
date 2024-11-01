@@ -14,7 +14,7 @@
   box-sizing: border-box;
 }
 .searchbar button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   background-color: var(--button-background);
   color: white;
   border: none;
