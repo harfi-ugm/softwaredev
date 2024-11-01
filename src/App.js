@@ -26,7 +26,7 @@ const App = () => {
   const [filteredFavorites, setFilteredFavorites] = useState([]); // New state for filtered favorites
 
   // API key for Spoonacular
-  const API_KEY = 'e4af26cc9fae477a9b159f4c02d7d705';
+  const API_KEY = 'd3f608644c1b444ea473b0c2f4781543';
 
   // Toggle theme
   const toggleTheme = () => setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
