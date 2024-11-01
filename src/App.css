@@ -1,5 +1,5 @@
 body {
-  font-family: cursive;
+  font-family: 'Nunito', cursive; /* Fallback to cursive if Nunito isn't available */
   margin: 0;
   padding: 0;
   background-color: var(--background-color);
@@ -21,7 +21,11 @@ header {
   margin-bottom: 20px;
 }
 
-header button {
+
+
+header button, .recipe-card button {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 500; /* Apply Nunito with weight 500 for buttons */
   padding: 10px 15px;
   background-color: var(--button-background);
   color: white;
@@ -44,6 +48,8 @@ header input {
 
 /* Recipe and favorites sections */
 h2 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700; /* Apply Nunito with weight 700 for Favorites and Recipes */
   margin-top: 20px;
 }
 
@@ -82,6 +88,8 @@ h2 {
   transition: background-color 0.3s ease;
 }
 
+
+
 .recipe-card button:hover {
   background-color: var(--button-hover);
 }
@@ -89,7 +97,7 @@ h2 {
 /* Light theme styles */
 .light {
   --background-color: #feb300;
-  --text-color: #ffffff;
+  --text-color: #12333A;
   --button-background: #12333A;
   --button-hover: #0056b3;
   --input-border: #cccccc;
@@ -99,7 +107,7 @@ h2 {
 /* Dark theme styles */
 .dark {
   --background-color: #12333A;
-  --text-color: #ffffff;
+  --text-color: #FA6400;
   --button-background: #FA6400;
   --button-hover: #FA6400;
   --input-border: #555555;

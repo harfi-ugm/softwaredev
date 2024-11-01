@@ -12,7 +12,7 @@ const SearchCard = (props) => {
     }
 
     const handleSubmit = (e) => {
-        e.preventDeffault()
+        e.preventDefault()
         //console.log(e)
         getDataFromChild(inputValue)
     }

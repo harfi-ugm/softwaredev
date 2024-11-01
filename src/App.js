@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useContext, useCallback } from 'react';
-
+import './App.css'
 // Context for theme and favorites management
 const ThemeContext = React.createContext();
 const FavoritesContext = React.createContext();
@@ -18,23 +18,28 @@ const favoritesReducer = (state, action) => {
 
 const App = () => {
   const [theme, setTheme] = useState('light');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [inputValue, setInputValue] = useState(''); // holds text input
+  const [searchTerm, setSearchTerm] = useState(''); // triggers search
   const [recipes, setRecipes] = useState([]);
-  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [favorites, dispatch] = useReducer(favoritesReducer, []);
 
   // API key for Spoonacular
-  const API_KEY = '22aec26d7b0d4b81921e0a9ab5fedec3';
+  const API_KEY = 'e4af26cc9fae477a9b159f4c02d7d705';
 
   // Toggle theme
   const toggleTheme = () => setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
 
-  // Fetch recipes from Spoonacular API
+  useEffect(() => {
+    document.body.className = theme; // Apply theme class directly to body
+  }, [theme]);
+  
+  // Fetch recipes from Spoonacular API when searchTerm updates
   useEffect(() => {
     const fetchRecipes = async () => {
+      if (!searchTerm) return; // skip fetch if search term is empty
       try {
         const response = await fetch(
-          `https://api.spoonacular.com/recipes/complexSearch?query=${searchTerm}&apiKey=${API_KEY}`
+          `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${searchTerm}`
         );
         const data = await response.json();
         setRecipes(data.results || []);
@@ -43,18 +48,8 @@ const App = () => {
       }
     };
 
-    // Only fetch recipes if there is a search term
-    if (searchTerm) {
-      fetchRecipes();
-    }
+    fetchRecipes();
   }, [searchTerm]);
-
-  // Filter recipes by search term
-  useEffect(() => {
-    setFilteredRecipes(
-      recipes.filter(recipe => recipe.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  }, [searchTerm, recipes]);
 
   // Add or remove favorite
   const toggleFavorite = useCallback(recipe => {
@@ -71,14 +66,15 @@ const App = () => {
       <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>
         <div className={`app ${theme}`}>
           <header>
+            
             <button onClick={toggleTheme}>Change Theme</button>
             <input
               type="text"
               placeholder="Search Recipes"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
             />
-            <button onClick={() => setFilteredRecipes(recipes)}>Search recipes</button>
+            <button onClick={() => setSearchTerm(inputValue)}>Search recipes</button>
           </header>
           
           <h2>Favorites</h2>
@@ -90,7 +86,7 @@ const App = () => {
           
           <h2>Recipes</h2>
           <div className="recipes">
-            {filteredRecipes.map(recipe => (
+            {recipes.map(recipe => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
@@ -108,7 +104,7 @@ const RecipeCard = ({ recipe }) => {
     <div className="recipe-card">
       <img src={`https://spoonacular.com/recipeImages/${recipe.id}-312x231.jpg`} alt={recipe.title} />
       <h3>{recipe.title}</h3>
-      <button onClick={() => toggleFavorite(recipe)}>
+      <button className="favorite-button" onClick={() => toggleFavorite(recipe)}>
         {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       </button>
     </div>
