@@ -1,27 +1,107 @@
-.App {
-  text-align: center;
+body {
+  font-family: cursive;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Header styles */
+header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-bottom: 20px;
+}
+
+header button {
+  padding: 10px 15px;
+  background-color: var(--button-background);
   color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+header button:hover {
+  background-color: var(--button-hover);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+header input {
+  padding: 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+/* Recipe and favorites sections */
+h2 {
+  margin-top: 20px;
+}
+
+.favorites, .recipes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.recipe-card {
+  background-color: var(--card-background);
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.recipe-card:hover {
+  transform: scale(1.05);
+}
+
+.recipe-card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.recipe-card button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: var(--button-background);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recipe-card button:hover {
+  background-color: var(--button-hover);
+}
+
+/* Light theme styles */
+.light {
+  --background-color: #feb300;
+  --text-color: #ffffff;
+  --button-background: #12333A;
+  --button-hover: #0056b3;
+  --input-border: #cccccc;
+  --card-background: #ffffff;
+}
+
+/* Dark theme styles */
+.dark {
+  --background-color: #12333A;
+  --text-color: #ffffff;
+  --button-background: #FA6400;
+  --button-hover: #FA6400;
+  --input-border: #555555;
+  --card-background: #ffffff;
 }
