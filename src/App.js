@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer, useContext, useCallback } from 'react';
-import './App.css';
-
+import './App.css'
 // Context for theme and favorites management
 const ThemeContext = React.createContext();
 const FavoritesContext = React.createContext();
@@ -27,17 +26,22 @@ const App = () => {
   const [filteredFavorites, setFilteredFavorites] = useState([]); // New state for filtered favorites
 
   // API key for Spoonacular
-  const API_KEY = '22aec26d7b0d4b81921e0a9ab5fedec3';
+  const API_KEY = 'e4af26cc9fae477a9b159f4c02d7d705';
 
   // Toggle theme
   const toggleTheme = () => setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
 
-  // Fetch recipes from Spoonacular API
+  useEffect(() => {
+    document.body.className = theme; // Apply theme class directly to body
+  }, [theme]);
+  
+  // Fetch recipes from Spoonacular API when searchTerm updates
   useEffect(() => {
     const fetchRecipes = async () => {
+      if (!searchTerm) return; // skip fetch if search term is empty
       try {
         const response = await fetch(
-          `https://api.spoonacular.com/recipes/complexSearch?query=${searchTerm}&apiKey=${API_KEY}`
+          `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${searchTerm}`
         );
         const data = await response.json();
         setRecipes(data.results || []);
@@ -45,12 +49,12 @@ const App = () => {
         console.error("Error fetching recipes:", error);
       }
     };
-
-    // Only fetch recipes if there is a search term
-    if (searchTerm) {
-      fetchRecipes();
-    }
+if(searchTerm){
+    fetchRecipes();}
   }, [searchTerm]);
+
+
+
 
   // Filter recipes by search term
   useEffect(() => {
@@ -59,12 +63,20 @@ const App = () => {
     );
   }, [searchTerm, recipes]);
 
+    // Updates `filteredFavorites` each time favorites list changes
+    useEffect(() => {
+      setFilteredFavorites(
+        favorites.filter(recipe => recipe.title.toLowerCase().includes(favoriteSearchTerm.toLowerCase()))
+      );
+    }, [favorites, favoriteSearchTerm]);
+
   // Filter favorites by favorite search term when search button is clicked
   const handleFavoriteSearch = () => {
     setFilteredFavorites(
-      favorites.filter(recipe => recipe.title.toLowerCase().includes(favoriteSearchTerm.toLowerCase()))
+      favorites.filter(recipe => recipe.title.toLowerCase().includes( searchTerm.toLowerCase()))
     );
   };
+
 
   // Add or remove favorite
   const toggleFavorite = useCallback(recipe => {
@@ -77,7 +89,7 @@ const App = () => {
   }, [favorites]);
 
   return (
-    <ThemeContext.Provider value={theme}>
+      <ThemeContext.Provider value={theme}>
       <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>
         <div className={`app ${theme}`}>
           <header>
@@ -85,20 +97,24 @@ const App = () => {
           </header>
           
           <h2>Favorites</h2>
-          <div className="searchbar">
-            <input
-              type="text"
-              placeholder="Search Favorite Recipes"
-              value={favoriteSearchTerm}
-              onChange={e => setFavoriteSearchTerm(e.target.value)} // Filter favorites
-            />
+          <div className="favorites-section">
+            <div className="searchbar">
+              <input
+               type="text"
+               placeholder="Search Favorite Recipes"
+               value={favoriteSearchTerm}
+               onChange={e => setFavoriteSearchTerm(e.target.value)} // Filter favorites
+            />  
             <button onClick={handleFavoriteSearch}>Search</button> {/* New search button */}
           </div>
           <div className="favorites">
             {filteredFavorites.map(recipe => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
+            </div>
           </div>
+        
+         
 
           <div className="searchbar">
             <input
@@ -109,6 +125,8 @@ const App = () => {
             />
             <button onClick={() => setFilteredRecipes(recipes)}>Search</button>
           </div>
+
+          <h2>Recipes</h2>
           <div className="recipes">
             {filteredRecipes.map(recipe => (
               <RecipeCard key={recipe.id} recipe={recipe} />
@@ -128,7 +146,7 @@ const RecipeCard = ({ recipe }) => {
     <div className="recipe-card">
       <img src={`https://spoonacular.com/recipeImages/${recipe.id}-312x231.jpg`} alt={recipe.title} />
       <h3>{recipe.title}</h3>
-      <button onClick={() => toggleFavorite(recipe)}>
+      <button className="favorite-button" onClick={() => toggleFavorite(recipe)}>
         {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       </button>
     </div>
