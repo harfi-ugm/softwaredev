@@ -129,7 +129,7 @@ h2 {
   height: Hug (496px)px;
   padding: 24px;
   gap: 23px;
-  opacity: 0px;
+  opacity: 100px;
 }
 
 .recipe-card:hover {
