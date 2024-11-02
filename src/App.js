@@ -93,7 +93,7 @@ if(searchTerm){
       <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>
         <div className={`app ${theme}`}>
           <header>
-            <button onClick={toggleTheme}>Change Theme</button>
+            <button onClick={toggleTheme} className='header button'>Change Theme</button>
           </header>
           
           <h2>Favorites</h2>
