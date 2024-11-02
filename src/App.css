@@ -69,6 +69,7 @@ header button, .recipe-card button {
   font-family: 'Nunito', sans-serif;
   font-weight: 500; /* Apply Nunito with weight 500 for buttons */
   padding: 10px 15px;
+  opacity:100px;
   background-color: var(--button-background);
   color: white;
   border: none;
