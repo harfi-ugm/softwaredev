@@ -28,7 +28,7 @@
 /* General body and layout styling */
 
 body {
-  font-family: 'Nunito', cursive; /* Fallback to cursive if Nunito isn't available */
+  font-family: 'Nunito', cursive, sans-serif; /* Fallback to cursive if Nunito isn't available */
   margin: 0;
   padding: 0;
   background-color: var(--background-color);
@@ -53,13 +53,12 @@ header {
 }
 
 header button {
-  width: Hug (233px)px;
-  height: Hug (64px)px;
+  width: 150px;
+  height: height 50px;
   min-width: 150px;
   padding: 16px 32px 16px 32px;
   gap: 10px;
   border-radius: 4px ;
-  opacity: 0px;
   background-color: var(--button-background);
   color: white;
   cursor: pointer;
@@ -149,7 +148,6 @@ h2 {
   padding: 16px 32px 16px 32px;
   gap: 10px;
   border-radius: 4px;
-  opacity: 0px;
   background-color: var(--button-background);
   color: white;
   cursor: pointer;
